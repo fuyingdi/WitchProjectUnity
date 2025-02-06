@@ -1,0 +1,65 @@
+//This class is auto-generated, do not modify (use Tools/TagsLayersEnumBuilder)
+public abstract class Layers {
+	public const string Default = "Default";
+	public const string TransparentFX = "TransparentFX";
+	public const string IgnoreRaycast = "Ignore Raycast";
+	public const string Water = "Water";
+	public const string UI = "UI";
+	public const string Obstacles = "Obstacles";
+	public const string Ground = "Ground";
+	public const string Player = "Player";
+	public const string ObstaclesDoors = "ObstaclesDoors";
+	public const string NoPathfinding = "NoPathfinding";
+	public const string Enemies = "Enemies";
+	public const string NoCollisions = "NoCollisions";
+	public const string Hole = "Hole";
+	public const string MovingPlatform = "MovingPlatform";
+	public const string FallingPlatform = "FallingPlatform";
+	public const string Projectile = "Projectile";
+	public const string Camera1 = "Camera1";
+	public const string Camera2 = "Camera2";
+	public const string Camera3 = "Camera3";
+	public const string Camera4 = "Camera4";
+
+	public const int DefaultMask = 1;
+	public const int TransparentFXMask = 1 << 1;
+	public const int IgnoreRaycastMask = 1 << 2;
+	public const int WaterMask = 1 << 4;
+	public const int UIMask = 1 << 5;
+	public const int ObstaclesMask = 1 << 8;
+	public const int GroundMask = 1 << 9;
+	public const int PlayerMask = 1 << 10;
+	public const int ObstaclesDoorsMask = 1 << 11;
+	public const int NoPathfindingMask = 1 << 12;
+	public const int EnemiesMask = 1 << 13;
+	public const int NoCollisionsMask = 1 << 14;
+	public const int HoleMask = 1 << 15;
+	public const int MovingPlatformMask = 1 << 16;
+	public const int FallingPlatformMask = 1 << 17;
+	public const int ProjectileMask = 1 << 18;
+	public const int Camera1Mask = 1 << 19;
+	public const int Camera2Mask = 1 << 20;
+	public const int Camera3Mask = 1 << 21;
+	public const int Camera4Mask = 1 << 22;
+
+	public const int DefaultNumber = 0;
+	public const int TransparentFXNumber = 1;
+	public const int IgnoreRaycastNumber = 2;
+	public const int WaterNumber = 4;
+	public const int UINumber = 5;
+	public const int ObstaclesNumber = 8;
+	public const int GroundNumber = 9;
+	public const int PlayerNumber = 10;
+	public const int ObstaclesDoorsNumber = 11;
+	public const int NoPathfindingNumber = 12;
+	public const int EnemiesNumber = 13;
+	public const int NoCollisionsNumber = 14;
+	public const int HoleNumber = 15;
+	public const int MovingPlatformNumber = 16;
+	public const int FallingPlatformNumber = 17;
+	public const int ProjectileNumber = 18;
+	public const int Camera1Number = 19;
+	public const int Camera2Number = 20;
+	public const int Camera3Number = 21;
+	public const int Camera4Number = 22;
+}
