@@ -1,17 +1,16 @@
-﻿using Assets.Scripts;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGrabSensor : MonoBehaviour
+public class PlayerTableSensor : MonoBehaviour
 {
     public string TagFilter;
 
-    [ReadOnly] public List<Item> CurrentHold;
+    [ReadOnly] public List<GameObject> CurrentHold;
 
     private void Start()
     {
-        CurrentHold = new List<Item>();
+        CurrentHold = new List<GameObject>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,7 +21,7 @@ public class PlayerGrabSensor : MonoBehaviour
         }
         else
         {
-            CurrentHold.Add(other.gameObject.GetComponent<Item>());
+            CurrentHold.Add(other.gameObject);
         }
     }
 
@@ -36,7 +35,7 @@ public class PlayerGrabSensor : MonoBehaviour
             }
             else
             {
-                CurrentHold.Remove(other.gameObject.GetComponent<Item>());
+                CurrentHold.Remove(other.gameObject);
             }
         }
     }

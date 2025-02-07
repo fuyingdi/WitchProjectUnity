@@ -1,4 +1,5 @@
 ﻿using HutongGames.PlayMaker;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,10 +7,11 @@ namespace Assets.Scripts
 {
     public class PlayerGrabInteractor : MonoBehaviour
     {
-        public PlayerGrabSensor Sensor;
+        public PlayerGrabSensor ItemSensor;
+        public PlayerTableSensor TableSensor;
         public Transform Hand;
-        [Readonly]
-        public GameObject CurrentInHand;
+        [ReadOnly]
+        public Item CurrentInHand;
 
         private void Start()
         {
@@ -23,24 +25,64 @@ namespace Assets.Scripts
         private void Interact(InputAction.CallbackContext ctx)
         {
             // drop
-            if (CurrentInHand != null)
+            if (CurrentInHand != null && TableSensor.CurrentHold.Count == 0)
             {
+                //Debug.Log(1);
+                CurrentInHand.GetComponent<Rigidbody>().isKinematic = false;
+                CurrentInHand.GetComponent<Collider>().isTrigger = false;
                 CurrentInHand = null;
                 return;
             }
 
             // catch
-            if (Sensor.CurrentHold.Count > 0)
+            if (CurrentInHand == null && ItemSensor.CurrentHold.Count > 0 && !ItemSensor.CurrentHold[0].isOnTable)
             {
-                var target = Sensor.CurrentHold[0];
+                //Debug.Log(2);
+                var target = ItemSensor.CurrentHold[0];
                 CurrentInHand = target;
                 target.transform.position = Hand.transform.position;
+                CurrentInHand.OnPutOrCatch();
+                return;
             }
 
-            // TODO: put on table
-            if (CurrentInHand != null)
+            //  put on table
+            if (CurrentInHand != null
+                && TableSensor.CurrentHold.Count > 0 && TableSensor.CurrentHold[0].GetComponent<Table>().IsEmpty)
             {
+                //Debug.Log(3);
 
+                var targetTable = TableSensor.CurrentHold[0].GetComponent<Table>();
+                var targetPoint = targetTable.TopPoint;
+                if (!targetTable.IsEmpty) return;
+
+                CurrentInHand.transform.position = targetTable.TopPoint.position;
+
+                CurrentInHand.isOnTable = true;
+
+                targetTable.IsEmpty = false;
+                targetTable.CurrentItem = CurrentInHand;
+
+                CurrentInHand.OnPutOrCatch();
+                CurrentInHand = null;
+
+                return;
+            }
+
+            // get from table
+            if (CurrentInHand == null
+                && TableSensor.CurrentHold.Count > 0 && !TableSensor.CurrentHold[0].GetComponent<Table>().IsEmpty)
+            {
+                //Debug.Log(4);
+
+                var targetTable = TableSensor.CurrentHold[0].GetComponent<Table>();
+
+                CurrentInHand = targetTable.CurrentItem;
+                targetTable.IsEmpty = true;
+                targetTable.CurrentItem = null;
+
+                CurrentInHand.transform.position = Hand.transform.position;
+                CurrentInHand.isOnTable = false;
+                return;
             }
         }
 
