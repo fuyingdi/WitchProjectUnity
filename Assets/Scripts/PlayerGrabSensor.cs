@@ -7,11 +7,18 @@ public class PlayerGrabSensor : MonoBehaviour
 {
     public string TagFilter;
 
+    public Item CurrentChoose;
+
     [ReadOnly] public List<Item> CurrentHold;
 
     private void Start()
     {
         CurrentHold = new List<Item>();
+    }
+
+    private void Update()
+    {
+        
     }
 
     private void OnTriggerEnter(Collider other)

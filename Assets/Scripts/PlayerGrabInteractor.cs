@@ -86,6 +86,10 @@ namespace Assets.Scripts
             }
         }
 
+        private void Craft(InputAction.CallbackContext ctx)
+        {
+
+        }
         private void ThrowAim(InputAction.CallbackContext ctx)
         {
             // Lock Move

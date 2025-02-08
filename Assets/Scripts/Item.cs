@@ -1,37 +1,48 @@
-﻿using System.Collections;
+﻿using MoreMountains.Tools;
+using Sirenix.OdinInspector;
+using System.Collections;
 using UnityEngine;
 
-namespace Assets.Scripts
+public class Item : MonoBehaviour
 {
-    public class Item : MonoBehaviour
+    [ReadOnly] public Rigidbody Rb;
+    [ReadOnly] public Collider Collider;
+    public bool isOnTable;
+
+    [BoxGroup("加工")] public float ProgressTime;
+    [BoxGroup("加工")][ReadOnly] public float ProgressTimer;
+    [BoxGroup("加工")] public GameObject CraftTarget;
+    [BoxGroup("加工")] public CraftType CraftType;
+
+
+    void Update()
     {
-        public Rigidbody Rb;
-        public Collider Collider;
-        public bool isOnTable;
 
-        void Start()
+    }
+
+    public void OnPutOrCatch()
+    {
+        transform.rotation = Quaternion.identity;
+        Collider.isTrigger = true;
+        Rb.velocity = Vector3.zero;
+        Rb.isKinematic = true;
+    }
+
+    public void OnDrop()
+    {
+        Rb.isKinematic = false;
+        Collider.isTrigger = false;
+    }
+
+    private void OnValidate()
+    {
+        if (Collider == null)
         {
-
+            Collider = GetComponent<Collider>();
         }
-
-        // Update is called once per frame
-        void Update()
+        if (Rb == null)
         {
-
-        }
-
-        public void OnPutOrCatch()
-        {
-            transform.rotation = Quaternion.identity;
-            Collider.isTrigger = true;
-            Rb.velocity = Vector3.zero;
-            Rb.isKinematic = true;
-        }
-
-        public void OnDrop()
-        {
-            Rb.isKinematic = false;
-            Collider.isTrigger = false;
+            Rb = GetComponent<Rigidbody>();
         }
     }
 }
