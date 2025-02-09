@@ -6,11 +6,11 @@ public class PlayerTableSensor : MonoBehaviour
 {
     public string TagFilter;
 
-    [ReadOnly] public List<GameObject> CurrentHold;
+    [ReadOnly] public List<IItemHolder> CurrentHold;
 
     private void Start()
     {
-        CurrentHold = new List<GameObject>();
+        CurrentHold = new List<IItemHolder>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,7 +21,11 @@ public class PlayerTableSensor : MonoBehaviour
         }
         else
         {
-            CurrentHold.Add(other.gameObject);
+            var i = other.GetComponent<IItemHolder>();
+            if (i != null)
+            {
+                CurrentHold.Add(i);
+            }
         }
     }
 
@@ -35,7 +39,11 @@ public class PlayerTableSensor : MonoBehaviour
             }
             else
             {
-                CurrentHold.Remove(other.gameObject);
+                var i = other.GetComponent<IItemHolder>();
+                if (i != null)
+                {
+                    CurrentHold.Remove(i);
+                }
             }
         }
     }

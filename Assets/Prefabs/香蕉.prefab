@@ -250,6 +250,11 @@ MonoBehaviour:
   Rb: {fileID: 8501926665304614390}
   Collider: {fileID: 7359045409807870112}
   isOnTable: 0
+  ProgressTime: 3
+  ProgressTimer: 0
+  CraftTarget: {fileID: 889199069193990629, guid: 39bb9d87d675b4d429d3791f99bc984c,
+    type: 3}
+  CraftType: 0
 --- !u!135 &7359045409807870112
 SphereCollider:
   m_ObjectHideFlags: 0

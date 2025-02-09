@@ -8,28 +8,30 @@ public class CraftTable : MonoBehaviour, IItemHolder
 {
     [LabelText("加工类型")] public CraftType SupportCraftType;
 
-    public GameObject ProgressBarPrefab; // 环形进度条预制体（UI Canvas下的预制体）
+    //public GameObject ProgressBarPrefab; // 环形进度条预制体（UI Canvas下的预制体）
     public Transform ItemAttachPoint;
 
-    private Item currentItem;
     private ProgressBar _progressBar;
     private bool isProcessing;
     private float timer;
 
+    public Transform TopPoint { get => ItemAttachPoint; }
+
+    public Item CurrentItem { get; set; }
+
     void Start()
     {
         // 初始化进度条
-        GameObject progressUI = Instantiate(ProgressBarPrefab, transform.position + Vector3.up * 2, Quaternion.identity);
-        progressUI.transform.SetParent(transform); // 绑定到工作台
-        progressUI.SetActive(false);
+        _progressBar = GetComponentInChildren<ProgressBar>();
+        _progressBar.Show(false);
     }
 
     void Update()
     {
         if (isProcessing)
         {
-            currentItem.ProgressTimer += Time.deltaTime;
-            var normalizedProgress = currentItem.ProgressTimer / currentItem.ProgressTime;
+            CurrentItem.ProgressTimer += Time.deltaTime;
+            var normalizedProgress = CurrentItem.ProgressTimer / CurrentItem.ProgressTime;
             if (normalizedProgress < 1)
             {
                 _progressBar.UpdateProgress(normalizedProgress);
@@ -52,7 +54,7 @@ public class CraftTable : MonoBehaviour, IItemHolder
 
     void StartProcessing()
     {
-        if (currentItem != null || isProcessing) return;
+        if (isProcessing) return;
 
         // 启动进度条
         _progressBar.Show(true);
@@ -61,8 +63,8 @@ public class CraftTable : MonoBehaviour, IItemHolder
 
     void FinishProcessing()
     {
-        Destroy(currentItem);
-        GameObject processedItem = Instantiate(currentItem.CraftTarget, ItemAttachPoint.position, Quaternion.identity);
+        Destroy(CurrentItem.gameObject);
+        GameObject processedItem = Instantiate(CurrentItem.CraftTarget, ItemAttachPoint.position, Quaternion.identity);
 
         isProcessing = false;
         _progressBar.Show(false);
@@ -70,7 +72,7 @@ public class CraftTable : MonoBehaviour, IItemHolder
 
     bool ValidateCanProcess()
     {
-        return (SupportCraftType == currentItem.CraftType);
+        return SupportCraftType == CurrentItem.CraftType;
     }
 
 

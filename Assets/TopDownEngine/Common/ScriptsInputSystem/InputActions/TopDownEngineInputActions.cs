@@ -163,6 +163,15 @@ namespace MoreMountains.TopDownEngine
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Craft"",
+                    ""type"": ""Button"",
+                    ""id"": ""52e73693-29e2-4317-89dc-aaa76d87ae45"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -495,6 +504,17 @@ namespace MoreMountains.TopDownEngine
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6fb06a38-99d7-48ae-99a5-ee9c2fe524aa"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Craft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -546,6 +566,7 @@ namespace MoreMountains.TopDownEngine
             m_PlayerControls_SwitchCharacter = m_PlayerControls.FindAction("SwitchCharacter", throwIfNotFound: true);
             m_PlayerControls_TimeControl = m_PlayerControls.FindAction("TimeControl", throwIfNotFound: true);
             m_PlayerControls_CameraRotation = m_PlayerControls.FindAction("CameraRotation", throwIfNotFound: true);
+            m_PlayerControls_Craft = m_PlayerControls.FindAction("Craft", throwIfNotFound: true);
         }
 
         ~@TopDownEngineInputActions()
@@ -627,6 +648,7 @@ namespace MoreMountains.TopDownEngine
         private readonly InputAction m_PlayerControls_SwitchCharacter;
         private readonly InputAction m_PlayerControls_TimeControl;
         private readonly InputAction m_PlayerControls_CameraRotation;
+        private readonly InputAction m_PlayerControls_Craft;
         public struct PlayerControlsActions
         {
             private @TopDownEngineInputActions m_Wrapper;
@@ -646,6 +668,7 @@ namespace MoreMountains.TopDownEngine
             public InputAction @SwitchCharacter => m_Wrapper.m_PlayerControls_SwitchCharacter;
             public InputAction @TimeControl => m_Wrapper.m_PlayerControls_TimeControl;
             public InputAction @CameraRotation => m_Wrapper.m_PlayerControls_CameraRotation;
+            public InputAction @Craft => m_Wrapper.m_PlayerControls_Craft;
             public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -700,6 +723,9 @@ namespace MoreMountains.TopDownEngine
                 @CameraRotation.started += instance.OnCameraRotation;
                 @CameraRotation.performed += instance.OnCameraRotation;
                 @CameraRotation.canceled += instance.OnCameraRotation;
+                @Craft.started += instance.OnCraft;
+                @Craft.performed += instance.OnCraft;
+                @Craft.canceled += instance.OnCraft;
             }
 
             private void UnregisterCallbacks(IPlayerControlsActions instance)
@@ -749,6 +775,9 @@ namespace MoreMountains.TopDownEngine
                 @CameraRotation.started -= instance.OnCameraRotation;
                 @CameraRotation.performed -= instance.OnCameraRotation;
                 @CameraRotation.canceled -= instance.OnCameraRotation;
+                @Craft.started -= instance.OnCraft;
+                @Craft.performed -= instance.OnCraft;
+                @Craft.canceled -= instance.OnCraft;
             }
 
             public void RemoveCallbacks(IPlayerControlsActions instance)
@@ -801,6 +830,7 @@ namespace MoreMountains.TopDownEngine
             void OnSwitchCharacter(InputAction.CallbackContext context);
             void OnTimeControl(InputAction.CallbackContext context);
             void OnCameraRotation(InputAction.CallbackContext context);
+            void OnCraft(InputAction.CallbackContext context);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace MoreMountains.TopDownEngine
 	[AddComponentMenu("TopDown Engine/Character/Abilities/Character Movement")] 
 	public class CharacterMovement : CharacterAbility 
 	{
+		public Animator Animator;
 		/// the possible rotation modes for the character
 		public enum Movements { Free, Strict2DirectionsHorizontal, Strict2DirectionsVertical, Strict4Directions, Strict8Directions }
 
@@ -379,7 +380,10 @@ namespace MoreMountains.TopDownEngine
 			{
 				SetMovement ();	
 			}
-		}
+
+            if (_movementVector.magnitude > 0.1f) Animator.SetBool("isMove", true);
+            else Animator.SetBool("isMove", false);
+        }
 
 		/// <summary>
 		/// Describes what happens when the character is in the frozen state
@@ -602,6 +606,7 @@ namespace MoreMountains.TopDownEngine
 			MMAnimatorExtensions.UpdateAnimatorFloat(_animator, _speedAnimationParameter, Mathf.Abs(_controller.CurrentMovement.magnitude),_character._animatorParameters, _character.RunAnimatorSanityChecks);
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _walkingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Walking),_character._animatorParameters, _character.RunAnimatorSanityChecks);
 			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _idleAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Idle),_character._animatorParameters, _character.RunAnimatorSanityChecks);
+
 		}
 	}
 }

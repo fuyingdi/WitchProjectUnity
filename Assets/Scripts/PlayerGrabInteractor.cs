@@ -1,5 +1,6 @@
 ﻿using HutongGames.PlayMaker;
 using Sirenix.OdinInspector;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,7 @@ namespace Assets.Scripts
         {
             GameManager.Ins.Input.InputActions.PlayerControls.Interact.started += Interact;
 
+            GameManager.Ins.Input.InputActions.PlayerControls.Craft.performed += TryCraft;
             // TODO:
             //GameManager.Ins.Input.InputActions.PlayerControls.Throw.started += ThrowAim;
             //GameManager.Ins.Input.InputActions.PlayerControls.Throw.canceld += Throw;
@@ -47,11 +49,11 @@ namespace Assets.Scripts
 
             //  put on table
             if (CurrentInHand != null
-                && TableSensor.CurrentHold.Count > 0 && TableSensor.CurrentHold[0].GetComponent<Table>().IsEmpty)
+                && TableSensor.CurrentHold.Count > 0 && TableSensor.CurrentHold[0].IsEmpty)
             {
                 //Debug.Log(3);
 
-                var targetTable = TableSensor.CurrentHold[0].GetComponent<Table>();
+                var targetTable = TableSensor.CurrentHold[0];
                 var targetPoint = targetTable.TopPoint;
                 if (!targetTable.IsEmpty) return;
 
@@ -59,7 +61,6 @@ namespace Assets.Scripts
 
                 CurrentInHand.isOnTable = true;
 
-                targetTable.IsEmpty = false;
                 targetTable.CurrentItem = CurrentInHand;
 
                 CurrentInHand.OnPutOrCatch();
@@ -70,14 +71,13 @@ namespace Assets.Scripts
 
             // get from table
             if (CurrentInHand == null
-                && TableSensor.CurrentHold.Count > 0 && !TableSensor.CurrentHold[0].GetComponent<Table>().IsEmpty)
+                && TableSensor.CurrentHold.Count > 0 && !TableSensor.CurrentHold[0].IsEmpty)
             {
                 //Debug.Log(4);
 
-                var targetTable = TableSensor.CurrentHold[0].GetComponent<Table>();
+                var targetTable = TableSensor.CurrentHold[0];
 
                 CurrentInHand = targetTable.CurrentItem;
-                targetTable.IsEmpty = true;
                 targetTable.CurrentItem = null;
 
                 CurrentInHand.transform.position = Hand.transform.position;
@@ -86,10 +86,37 @@ namespace Assets.Scripts
             }
         }
 
-        private void Craft(InputAction.CallbackContext ctx)
+        private void TryCraft(InputAction.CallbackContext ctx)
         {
+            if (!ValidateCraft()) return;
 
+            StartCraft();
         }
+
+        private bool ValidateCraft()
+        {
+            if (CurrentInHand != null) return false;
+            if (TableSensor.CurrentHold[0].IsEmpty) return false;
+
+            var item = TableSensor.CurrentHold[0].CurrentItem;
+            var table = TableSensor.CurrentHold[0];
+
+            if (table is not CraftTable) return false;
+
+            var craftTalbe = table as CraftTable;
+            if (craftTalbe.SupportCraftType == item.CraftType)
+                return true;
+            else return false;
+        }
+
+        private void StartCraft()
+        {
+            var craftTable = TableSensor.CurrentHold[0] as CraftTable;
+            var item = craftTable.CurrentItem;
+
+            craftTable.TryStartProcessing();
+        }
+
         private void ThrowAim(InputAction.CallbackContext ctx)
         {
             // Lock Move
