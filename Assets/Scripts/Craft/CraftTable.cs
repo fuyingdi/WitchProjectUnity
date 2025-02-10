@@ -1,8 +1,7 @@
 ﻿using Assets.Scripts.UI;
 using Sirenix.OdinInspector;
-using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 public class CraftTable : MonoBehaviour, IItemHolder
 {

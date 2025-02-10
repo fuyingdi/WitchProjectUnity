@@ -52,8 +52,12 @@ MonoBehaviour:
   isOnTable: 0
   ProgressTime: 3
   ProgressTimer: 0
-  CraftTarget: {fileID: 0}
+  CraftTarget: {fileID: 889199069193990629}
   CraftType: 0
+  PairItemId: 2
+  Id: 1
+  TargetItemPrefab: {fileID: 3185084448620352655, guid: bec057ad7db9f794fa05a3a1cd7ab370,
+    type: 3}
 --- !u!135 &2384748924902419291
 SphereCollider:
   m_ObjectHideFlags: 0

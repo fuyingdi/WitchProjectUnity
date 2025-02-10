@@ -29,7 +29,7 @@ namespace Assets.Scripts
             // drop
             if (CurrentInHand != null && TableSensor.CurrentHold.Count == 0)
             {
-                //Debug.Log(1);
+                Debug.Log(1);
                 CurrentInHand.GetComponent<Rigidbody>().isKinematic = false;
                 CurrentInHand.GetComponent<Collider>().isTrigger = false;
                 CurrentInHand = null;
@@ -39,7 +39,7 @@ namespace Assets.Scripts
             // catch
             if (CurrentInHand == null && ItemSensor.CurrentHold.Count > 0 && !ItemSensor.CurrentHold[0].isOnTable)
             {
-                //Debug.Log(2);
+                Debug.Log(2);
                 var target = ItemSensor.CurrentHold[0];
                 CurrentInHand = target;
                 target.transform.position = Hand.transform.position;
@@ -51,7 +51,7 @@ namespace Assets.Scripts
             if (CurrentInHand != null
                 && TableSensor.CurrentHold.Count > 0 && TableSensor.CurrentHold[0].IsEmpty)
             {
-                //Debug.Log(3);
+                Debug.Log(3);
 
                 var targetTable = TableSensor.CurrentHold[0];
                 var targetPoint = targetTable.TopPoint;
@@ -69,11 +69,35 @@ namespace Assets.Scripts
                 return;
             }
 
+            // put on table and combine
+            if (CurrentInHand != null
+                && TableSensor.CurrentHold.Count > 0
+                && !TableSensor.CurrentHold[0].IsEmpty
+                && TableSensor.CurrentHold[0].CurrentItem.Id == CurrentInHand.PairItemId)
+            {
+                Debug.Log(4);
+
+                var itemGo = Instantiate(CurrentInHand.TargetItemPrefab);
+                var targetTable = TableSensor.CurrentHold[0];
+
+                Destroy(CurrentInHand.gameObject);
+                CurrentInHand = null;
+
+                Destroy(targetTable.CurrentItem.gameObject);
+
+                targetTable.CurrentItem = itemGo.GetComponent<Item>();
+                targetTable.CurrentItem.OnPutOrCatch();
+                targetTable.CurrentItem.transform.position = targetTable.TopPoint.position;
+                targetTable.CurrentItem.isOnTable = true;
+                return;
+            }
+
+
             // get from table
             if (CurrentInHand == null
                 && TableSensor.CurrentHold.Count > 0 && !TableSensor.CurrentHold[0].IsEmpty)
             {
-                //Debug.Log(4);
+                Debug.Log(5);
 
                 var targetTable = TableSensor.CurrentHold[0];
 

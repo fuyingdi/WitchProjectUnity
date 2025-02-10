@@ -18,7 +18,7 @@ public class PlayerGrabSensor : MonoBehaviour
 
     private void Update()
     {
-        
+        CurrentHold.RemoveAll(item => item == null);
     }
 
     private void OnTriggerEnter(Collider other)

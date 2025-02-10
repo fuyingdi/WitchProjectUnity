@@ -14,6 +14,10 @@ public class Item : MonoBehaviour
     [BoxGroup("加工")] public GameObject CraftTarget;
     [BoxGroup("加工")] public CraftType CraftType;
 
+    [BoxGroup("合成")] public int PairItemId;
+    [BoxGroup("合成")] public int Id;
+    [BoxGroup("合成")] public GameObject TargetItemPrefab;
+    
 
     void Update()
     {
