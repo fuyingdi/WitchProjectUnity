@@ -1,15 +1,16 @@
-﻿using Assets.Scripts;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGrabSensor : MonoBehaviour
+public class PlayerGrabSensor : PlayerSensor
 {
     public string TagFilter;
 
-    public Item CurrentChoose;
-
     [ReadOnly] public List<Item> CurrentHold;
+
+    public override bool HasTarget => CurrentHold.Count > 0;
+
+    public Item Target => CurrentHold[0];
 
     private void Start()
     {
@@ -47,4 +48,10 @@ public class PlayerGrabSensor : MonoBehaviour
             }
         }
     }
+}
+
+public class PlayerSensor : MonoBehaviour
+{
+    public virtual bool HasTarget { get; }
+
 }

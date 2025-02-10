@@ -1,6 +1,4 @@
-﻿using HutongGames.PlayMaker;
-using Sirenix.OdinInspector;
-using UnityEditor.UIElements;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,87 +25,75 @@ namespace Assets.Scripts
         private void Interact(InputAction.CallbackContext ctx)
         {
             // drop
-            if (CurrentInHand != null && TableSensor.CurrentHold.Count == 0)
+            if (!IsHandEmpty() && !TableSensor.HasTarget)
             {
-                Debug.Log(1);
-                CurrentInHand.GetComponent<Rigidbody>().isKinematic = false;
-                CurrentInHand.GetComponent<Collider>().isTrigger = false;
-                CurrentInHand = null;
+                DropItem();
                 return;
             }
 
             // catch
-            if (CurrentInHand == null && ItemSensor.CurrentHold.Count > 0 && !ItemSensor.CurrentHold[0].isOnTable)
+            if (IsHandEmpty() && ItemSensor.HasTarget && !ItemSensor.Target.isOnTable)
             {
-                Debug.Log(2);
-                var target = ItemSensor.CurrentHold[0];
-                CurrentInHand = target;
-                target.transform.position = Hand.transform.position;
-                CurrentInHand.OnPutOrCatch();
+                CatchItem(ItemSensor.Target);
                 return;
             }
 
             //  put on table
-            if (CurrentInHand != null
-                && TableSensor.CurrentHold.Count > 0 && TableSensor.CurrentHold[0].IsEmpty)
+            if (!IsHandEmpty() && TableSensor.HasTarget && TableSensor.Target.IsEmpty)
             {
-                Debug.Log(3);
-
-                var targetTable = TableSensor.CurrentHold[0];
-                var targetPoint = targetTable.TopPoint;
-                if (!targetTable.IsEmpty) return;
-
-                CurrentInHand.transform.position = targetTable.TopPoint.position;
-
-                CurrentInHand.isOnTable = true;
-
-                targetTable.CurrentItem = CurrentInHand;
-
-                CurrentInHand.OnPutOrCatch();
-                CurrentInHand = null;
-
+                PutHandItemOnTable(TableSensor.Target);
                 return;
             }
 
             // put on table and combine
-            if (CurrentInHand != null
-                && TableSensor.CurrentHold.Count > 0
-                && !TableSensor.CurrentHold[0].IsEmpty
-                && TableSensor.CurrentHold[0].CurrentItem.Id == CurrentInHand.PairItemId)
+            if (!IsHandEmpty() && TableSensor.HasTarget && !TableSensor.Target.IsEmpty && TableSensor.Target.CurrentItem.Id == CurrentInHand.PairItemId)
             {
-                Debug.Log(4);
-
-                var itemGo = Instantiate(CurrentInHand.TargetItemPrefab);
-                var targetTable = TableSensor.CurrentHold[0];
-
-                Destroy(CurrentInHand.gameObject);
-                CurrentInHand = null;
-
-                Destroy(targetTable.CurrentItem.gameObject);
-
-                targetTable.CurrentItem = itemGo.GetComponent<Item>();
-                targetTable.CurrentItem.OnPutOrCatch();
-                targetTable.CurrentItem.transform.position = targetTable.TopPoint.position;
-                targetTable.CurrentItem.isOnTable = true;
+                PutOnTableAndCombine();
                 return;
             }
-
 
             // get from table
-            if (CurrentInHand == null
-                && TableSensor.CurrentHold.Count > 0 && !TableSensor.CurrentHold[0].IsEmpty)
+            if (IsHandEmpty() && TableSensor.HasTarget && !TableSensor.Target.IsEmpty)
             {
-                Debug.Log(5);
-
-                var targetTable = TableSensor.CurrentHold[0];
-
-                CurrentInHand = targetTable.CurrentItem;
-                targetTable.CurrentItem = null;
-
-                CurrentInHand.transform.position = Hand.transform.position;
-                CurrentInHand.isOnTable = false;
+                TakeFromTable(TableSensor.Target);
                 return;
             }
+        }
+
+        private void TakeFromTable(IItemHolder table)
+        {
+            CurrentInHand = table.TookItem();
+        }
+
+        private void PutOnTableAndCombine()
+        {
+            var newItemGo = Instantiate(CurrentInHand.TargetItemPrefab);
+            var newItem = newItemGo.GetComponent<Item>();
+
+            Destroy(CurrentInHand.gameObject);
+            CurrentInHand = null;
+
+            TableSensor.Target.ClearItem();
+            TableSensor.Target.SpawnItem(newItem);
+        }
+
+        private void CatchItem(Item target)
+        {
+            CurrentInHand = target;
+            target.transform.position = Hand.transform.position;
+            CurrentInHand.OnPutOrCatch();
+        }
+
+        private void DropItem()
+        {
+            CurrentInHand.OnDrop();
+            CurrentInHand = null;
+        }
+
+        private void PutHandItemOnTable(IItemHolder targetTable)
+        {
+            targetTable.PutItemOn(CurrentInHand);
+            CurrentInHand = null;
         }
 
         private void TryCraft(InputAction.CallbackContext ctx)
@@ -162,5 +148,7 @@ namespace Assets.Scripts
                 CurrentInHand.transform.position = Hand.transform.position;
             }
         }
+
+        private bool IsHandEmpty() => CurrentInHand == null;
     }
 }

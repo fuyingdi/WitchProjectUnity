@@ -65,6 +65,7 @@ public class CraftTable : MonoBehaviour, IItemHolder
         Destroy(CurrentItem.gameObject);
         GameObject processedItem = Instantiate(CurrentItem.CraftTarget, ItemAttachPoint.position, Quaternion.identity);
 
+        CurrentItem = processedItem.GetComponent<Item>();
         isProcessing = false;
         _progressBar.Show(false);
     }
@@ -74,14 +75,4 @@ public class CraftTable : MonoBehaviour, IItemHolder
         return SupportCraftType == CurrentItem.CraftType;
     }
 
-
-    public Item OnTookItem()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnPutItem(Item item)
-    {
-        throw new System.NotImplementedException();
-    }
 }

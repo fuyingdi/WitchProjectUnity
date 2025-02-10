@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTableSensor : MonoBehaviour
+public class PlayerTableSensor : PlayerSensor
 {
     public string TagFilter;
 
     [ReadOnly] public List<IItemHolder> CurrentHold;
+
+    public override bool HasTarget => CurrentHold.Count > 0;
+
+    public IItemHolder Target => CurrentHold[0];
 
     private void Start()
     {

@@ -19,11 +19,6 @@ public class Item : MonoBehaviour
     [BoxGroup("合成")] public GameObject TargetItemPrefab;
     
 
-    void Update()
-    {
-
-    }
-
     public void OnPutOrCatch()
     {
         transform.rotation = Quaternion.identity;
