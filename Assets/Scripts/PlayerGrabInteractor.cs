@@ -50,7 +50,7 @@ namespace Assets.Scripts
             {
                 PutOnTableAndCombine();
                 return;
-            }
+            } 
 
             // get from table
             if (IsHandEmpty() && TableSensor.HasTarget && !TableSensor.Target.IsEmpty)
