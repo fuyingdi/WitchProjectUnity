@@ -12,7 +12,7 @@ public class Item : MonoBehaviour
     [BoxGroup("加工")] public float ProgressTime;
     [BoxGroup("加工")][ReadOnly] public float ProgressTimer;
     [BoxGroup("加工")] public GameObject CraftTarget;
-    [BoxGroup("加工")] public CraftType CraftType;
+    [BoxGroup("加工")] public CraftTypeData CraftTypeData;
 
     [BoxGroup("合成")] public int PairItemId;
     [BoxGroup("合成")] public int Id;

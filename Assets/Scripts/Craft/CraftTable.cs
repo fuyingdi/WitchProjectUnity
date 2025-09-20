@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CraftTable : MonoBehaviour, IItemHolder
 {
-    [LabelText("加工类型")] public CraftType SupportCraftType;
+    [LabelText("支持的加工类型")] public CraftTypeData SupportedCraftType;
 
     //public GameObject ProgressBarPrefab; // 环形进度条预制体（UI Canvas下的预制体）
     public Transform ItemAttachPoint;
@@ -55,6 +55,12 @@ public class CraftTable : MonoBehaviour, IItemHolder
     {
         if (isProcessing) return;
 
+        // 设置加工时间
+        if (CurrentItem != null && CurrentItem.CraftTypeData != null)
+        {
+            CurrentItem.ProgressTime = CurrentItem.CraftTypeData.processingTime;
+        }
+
         // 启动进度条
         _progressBar.Show(true);
         isProcessing = true;
@@ -72,7 +78,7 @@ public class CraftTable : MonoBehaviour, IItemHolder
 
     bool ValidateCanProcess()
     {
-        return SupportCraftType == CurrentItem.CraftType;
+        return SupportedCraftType == CurrentItem.CraftTypeData;
     }
 
 }

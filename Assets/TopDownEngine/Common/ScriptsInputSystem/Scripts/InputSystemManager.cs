@@ -13,9 +13,7 @@ namespace MoreMountains.TopDownEngine
     /// </summary>
     public class InputSystemManager : InputManager
     {
-        /// a set of input actions to use to read input on
         public TopDownEngineInputActions InputActions;
-        /// the position of the mouse
         public override Vector2 MousePosition => Mouse.current.position.ReadValue();
 
         protected Vector2 _primaryMovementInput;
@@ -48,7 +46,7 @@ namespace MoreMountains.TopDownEngine
             InputActions.PlayerControls.Crouch.performed += context => { BindButton(context, CrouchButton); };
             InputActions.PlayerControls.Shoot.performed += context => { BindButton(context, ShootButton); };
             InputActions.PlayerControls.SecondaryShoot.performed += context => { BindButton(context, SecondaryShootButton); };
-            //InputActions.PlayerControls.Interact.performed += context => { BindButton(context, InteractButton); };
+            InputActions.PlayerControls.Interact.performed += context => { BindButton(context, InteractButton); };
             InputActions.PlayerControls.Reload.performed += context => { BindButton(context, ReloadButton); };
             InputActions.PlayerControls.Pause.performed += context => { BindButton(context, PauseButton); };
             InputActions.PlayerControls.SwitchWeapon.performed += context => { BindButton(context, SwitchWeaponButton); };

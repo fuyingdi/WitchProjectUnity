@@ -114,7 +114,7 @@ namespace Assets.Scripts
             if (table is not CraftTable) return false;
 
             var craftTalbe = table as CraftTable;
-            if (craftTalbe.SupportCraftType == item.CraftType)
+            if (craftTalbe.SupportedCraftType == item.CraftTypeData)
                 return true;
             else return false;
         }
