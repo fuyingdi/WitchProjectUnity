@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f61f65b029600e49bf9dd88b1da23eb, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  Item: {fileID: 11400000, guid: f3837e35f7e930943be75b4bc19ea475, type: 2}
   Items:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: f3837e35f7e930943be75b4bc19ea475, type: 2}
+  - {fileID: 11400000, guid: f3837e35f7e930943be75b4bc19ea475, type: 2}
+  CraftTypes:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -25,30 +26,12 @@ MonoBehaviour:
     Inputs:
     - ItemID: 1
       Quantity: 1
-    - ItemID: 3
-      Quantity: 2
-    - ItemID: 4
-      Quantity: 8
-    - ItemID: 0
-      Quantity: 0
-    - ItemID: 0
-      Quantity: 0
-    - ItemID: 0
-      Quantity: 0
-    - ItemID: 0
-      Quantity: 0
-    - ItemID: 0
-      Quantity: 0
-    - ItemID: 0
-      Quantity: 0
-    - ItemID: 0
-      Quantity: 0
-    - ItemID: 0
-      Quantity: 0
     - ItemID: 0
       Quantity: 0
   - OutputItemID: 0
-    Inputs: []
+    Inputs:
+    - ItemID: 0
+      Quantity: 0
   - OutputItemID: 0
     Inputs: []
   - OutputItemID: 0
